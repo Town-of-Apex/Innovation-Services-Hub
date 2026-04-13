@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="mb-10">
+    <h2 class="font-serif text-3xl mb-3 text-teal">Service Directory</h2>
+    <p class="text-rosy text-lg max-w-2xl">Access all internal applications, portals, and tools. Select a service below to be securely redirected.</p>
+</div>
+
+{% if services %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for service in services %}
+    <a href="{{ service.url }}" class="card-panel card-hover group p-6 flex flex-col h-full active:scale-[0.98]">
+        <div class="flex items-start justify-between mb-4">
+            <div class="w-12 h-12 rounded-xl bg-inner flex items-center justify-center border border-gray-100" style="color: {{ service.color }};">
+                {% if service.icon_svg %}
+                    {{ service.icon_svg | safe }}
+                {% else %}
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                {% endif %}
+            </div>
+            <div class="text-xs font-semibold tracking-wider uppercase text-rosy bg-gray-50 px-2 py-1 rounded-md border border-gray-100">
+                app
+            </div>
+        </div>
+        
+        <h3 class="font-serif text-xl mb-2 text-gray-900 group-hover:text-teal transition-colors">{{ service.name }}</h3>
+        <p class="text-rosy text-sm flex-grow">{{ service.description }}</p>
+        
+        <div class="mt-6 pt-4 border-t border-gray-100 flex items-center text-sm font-medium text-teal opacity-80 group-hover:opacity-100 transition-opacity">
+            <span>Launch Service</span>
+            <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="bg-surface border border-gray-200 rounded-xl p-12 text-center">
+    <div class="w-16 h-16 mx-auto bg-inner rounded-xl flex items-center justify-center text-rosy mb-4">
+        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+        </svg>
+    </div>
+    <h3 class="font-serif text-xl mb-2 text-gray-900">No Services Registered</h3>
+    <p class="text-rosy mb-6 max-w-md mx-auto">There are currently no active applications available in the directory. Visit the administration panel to add new services.</p>
+    <a href="/admin" class="btn-base btn-teal px-6 py-2.5">Go to Administration</a>
+</div>
+{% endif %}
+
+{% endblock %}

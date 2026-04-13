@@ -1,0 +1,13 @@
+[project]
+name = "innovation-services-hub"
+version = "0.1.0"
+description = "Service portal."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "jinja2",
+    "sqlalchemy",
+    "python-multipart"
+]

@@ -1,0 +1,9 @@
+services:
+  hub:
+    build: .
+    container_name: innovation-services-hub
+    ports:
+      - "10000:10000"
+    volumes:
+      - ./services.db:/app/services.db
+    restart: always
