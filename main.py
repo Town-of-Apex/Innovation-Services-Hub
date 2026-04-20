@@ -7,10 +7,15 @@ from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
 import os
 
+from starlette.middleware.base import BaseHTTPMiddleware
+
 # AAS-1.0: BASE_PATH support
 BASE_PATH = os.getenv("BASE_PATH", "").rstrip('/')
 
-app = FastAPI(title="Innovation Services Hub")
+app = FastAPI(
+    title="Innovation Services Hub",
+    root_path=BASE_PATH
+)
 
 # Setup DB
 DATABASE_URL = "sqlite:///./services.db"
@@ -68,7 +73,7 @@ async def add_service(
     new_service = ServiceLink(name=name, description=description, url=url, icon_svg=icon_svg, color=color)
     db.add(new_service)
     db.commit()
-    # AAS-1.0: Relative redirect to avoid base path issues
+    # AAS-1.0: Truly relative redirect
     return RedirectResponse(url="./", status_code=303)
 
 @app.post("/admin/delete/{service_id}")
@@ -77,7 +82,7 @@ async def delete_service(service_id: int, db: Session = Depends(get_db)):
     if service:
         db.delete(service)
         db.commit()
-    # AAS-1.0: Relative redirect (back to /admin)
+    # AAS-1.0: Truly relative redirect back to admin root
     return RedirectResponse(url="../", status_code=303)
 
 @app.post("/admin/edit/{service_id}")
@@ -98,7 +103,7 @@ async def edit_service(
         service.icon_svg = icon_svg
         service.color = color
         db.commit()
-    # AAS-1.0: Relative redirect
+    # AAS-1.0: Truly relative redirect
     return RedirectResponse(url="../", status_code=303)
 
 if __name__ == "__main__":

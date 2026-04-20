@@ -2,12 +2,16 @@ services:
   hub:
     build: .
     container_name: innovation-services-hub
-    ports:
-      - "8080:8080"
     environment:
       - BASE_PATH=/hub
     networks:
       - apex-internal
+    labels:
+      - "traefik.enable=true"
+      # ROUTE: Match anything starting with /hub
+      - "traefik.http.routers.hub.rule=PathPrefix(`/hub`)"
+      # PORT: Tell Traefik the app listens on 8080
+      - "traefik.http.services.hub.loadbalancer.server.port=8080"
     volumes:
       - ./services.db:/app/services.db
     restart: always
