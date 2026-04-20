@@ -5,9 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Innovation Services Hub{% endblock %}</title>
+    
+    <!-- AAS-1.0: Base Path Support -->
+    <base href="{{ BASE_PATH }}/">
+    <script>window.APP_BASE_PATH = "{{ BASE_PATH }}";</script>
+
     <!-- 1. Include the Universal CSS -->
-    <link rel="stylesheet" href="static/apex-modern.css">
-    <link rel="icon" href="static/icon.ico" sizes="any">
+    <link rel="stylesheet" href="{{ BASE_PATH }}/static/apex-modern.css">
+    <link rel="icon" href="{{ BASE_PATH }}/static/icon.ico" sizes="any">
 </head>
 
 <body>
@@ -19,14 +24,14 @@
                 style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
                 <div style="display: flex; align-items: center; gap: 1rem;">
                     <!-- Branding Logo -->
-                    <a href="/" style="display: flex; align-items: center; gap: 1rem; text-decoration: none;">
-                        <img src="static/logo.svg" class="app-logo" alt="Innovation Services Hub logo">
+                    <a href="./" style="display: flex; align-items: center; gap: 1rem; text-decoration: none;">
+                        <img src="{{ BASE_PATH }}/static/logo.svg" class="app-logo" alt="Innovation Services Hub logo">
                         <h1 class="title-display">Innovation Services Hub</h1>
                     </a>
                 </div>
 
                 <nav>
-                    <a href="/admin" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8125rem;">
+                    <a href="admin" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8125rem;">
                         <svg class="icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;">
                             <path
                                 d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />

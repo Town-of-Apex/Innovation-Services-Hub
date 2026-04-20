@@ -7,6 +7,9 @@ from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
 import os
 
+# AAS-1.0: BASE_PATH support
+BASE_PATH = os.getenv("BASE_PATH", "").rstrip('/')
+
 app = FastAPI(title="Innovation Services Hub")
 
 # Setup DB
@@ -37,7 +40,11 @@ def get_db():
 os.makedirs("templates", exist_ok=True)
 os.makedirs("static", exist_ok=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
 templates = Jinja2Templates(directory="templates")
+
+# AAS-1.0: Inject BASE_PATH into template globals
+templates.env.globals["BASE_PATH"] = BASE_PATH
 
 @app.get("/", response_class=HTMLResponse)
 async def read_home(request: Request, db: Session = Depends(get_db)):
@@ -61,7 +68,8 @@ async def add_service(
     new_service = ServiceLink(name=name, description=description, url=url, icon_svg=icon_svg, color=color)
     db.add(new_service)
     db.commit()
-    return RedirectResponse(url="/admin", status_code=303)
+    # AAS-1.0: Relative redirect to avoid base path issues
+    return RedirectResponse(url="./", status_code=303)
 
 @app.post("/admin/delete/{service_id}")
 async def delete_service(service_id: int, db: Session = Depends(get_db)):
@@ -69,7 +77,8 @@ async def delete_service(service_id: int, db: Session = Depends(get_db)):
     if service:
         db.delete(service)
         db.commit()
-    return RedirectResponse(url="/admin", status_code=303)
+    # AAS-1.0: Relative redirect (back to /admin)
+    return RedirectResponse(url="../", status_code=303)
 
 @app.post("/admin/edit/{service_id}")
 async def edit_service(
@@ -89,8 +98,10 @@ async def edit_service(
         service.icon_svg = icon_svg
         service.color = color
         db.commit()
-    return RedirectResponse(url="/admin", status_code=303)
+    # AAS-1.0: Relative redirect
+    return RedirectResponse(url="../", status_code=303)
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=10000)
+    # AAS-1.0: Port 8080
+    uvicorn.run(app, host="0.0.0.0", port=8080)
